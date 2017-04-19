@@ -50,13 +50,8 @@ def main():
     if host == None or passwdFile == None or user == None:
         print parser.usage
         exit(0)
-
-    
-    passes_loaded = brute.load_passes()
-    print passes_loaded
-    
+    passes = brute.main()
     #fn = open(passwdFile, 'r')
-    
     for line in passes:
         print line
 	if Found:
@@ -68,7 +63,7 @@ def main():
 
 	connection_lock.acquire()
         password = line.strip('\r').strip('\n')
-	print "[-] Testing: "+str(password) + " on " + host
+	print "[-] Testing: "+ str(password) + " on " + host
         t = Thread(target=connect, args=(host, user,\
           password, True))
         child = t.start()

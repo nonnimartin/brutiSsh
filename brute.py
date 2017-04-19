@@ -6,48 +6,41 @@ def get_passwords(pass_file):
     pass_list = []
 
     for word in pass_obj.readlines():
-    	word      = word.strip('\n')
+        word      = word.strip('\n')
         pass_list.append(word)
     return pass_list
 
-def generate_any_chars(iter_len):
-    #this can be extended to non-number characters, but will not make numbers
-    #with fewer places - e.g if iter_len is 3 you can create 001 but not 1
-    chars = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    char_combs = [''.join(i) for i in product(chars, repeat = iter_len)]
+def generate_chars(iter_len):
+
+    char       =  0
+    char_combs = []
+
+    while len(str(char)) <= iter_len:
+       char_combs.append(str(char))
+       char += 1 
     return char_combs
 
-def generate_all_numbers(iter_to):
+def append_chars(password_list, iter_len):
 
-    number = 0
-    number_list = []
+    pass_plus = []
 
-    while number <= iter_to:
-        number_list.append(number)
-        number += 1
+    for password in password_list:
+        pass_plus.append(password)
 
-    return number_list
-
-def append_any_chars(password_list, iter_len):
-
-	pass_plus = []
-	char_list = generate_any_chars(iter_len)
-	#tries all passwords without numbers with all combinations of numbers
-	#within the character length specified in iter_len
-	for chars in char_list:
-		for password in password_list:
-			pass_plus.append(password + chars)
-	return pass_plus
-
+    char_list = generate_chars(iter_len)
+    #tries all passwords without numbers with all combinations of numbers
+    #within the character length specified in iter_len
+    for chars in char_list:
+        for password in password_list:
+            pass_plus.append(password + chars)
+    return pass_plus
     
 def main():
     
     passwords = get_passwords('../password-dictionaries/dictionaries/combined')
+    pass_chars = append_chars(passwords, 2)
     
-    pass_chars = append_any_chars(passwords, 2)
-    pass_all = passwords + pass_chars
-    print generate_all_numbers(999)
-    return pass_all
+    return pass_chars
 
 if __name__ == "__main__":
     main()
